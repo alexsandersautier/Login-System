@@ -3,7 +3,7 @@ import os
 
 def save_file(date):
     with open('data.txt', 'a', newline='') as file:
-        file.write(date + os.linesep)
+        file.write(date + os.linesep)   
 
 def create_user():
     new_user = input('Type the new user: ')
@@ -42,20 +42,27 @@ def choose_option():
     return option
 
 def delete_user(user):
+    user_delete = user
     new_data = []
     with open('data.txt', 'r') as file:
         data = file.readlines()
-        for date in data:
-            new_data.append(date.replace('\n', ''))
+        if user+'\n' in data:
+            for date in data:
+                new_data.append(date.replace('\n', ''))
+        else:
+            print('User invalid')
+            return        
+    try:
+        if user in new_data:
+            new_data.pop(new_data.index(user)+1)
+            new_data.pop(new_data.index(user))
 
-    for i, user in enumerate(new_data):
-        line_delete = i
-
-    new_data.pop(line_delete-1)
-    new_data.pop(line_delete-1)
-
-    with open('data.txt', 'w') as file:
-        file.writelines(new_data)
+        with open('data.txt', 'w', newline='') as file:
+            for data in new_data:
+                file.write(data + os.linesep)
+        print(f'{user_delete} deleted')        
+    except:
+        print(f'{user_delete} not found')        
 
 def show_users():
     with open('data.txt', 'r') as file:
@@ -75,16 +82,22 @@ def main(option):
         user = input('Type user for delete: ')
         delete_user(user)
     elif option == '4':
-        show_users()      
+        show_users() 
+    elif option == '5':
+        exit()         
     else:
         print('🚫 Option invalid! 🚫')        
         main(choose_option())
 
-print('\nWelcome in this system - by Sautier Alexsander ')
-print('-----------------------------------------------')    
-print('|            Choose a option                  |')
-print('|            [1] - LogIn                      |')    
-print('|            [2] - Create New User            |')    
-print('|            [3] - Delete User                |')    
-print('|            [4] - Show Users                 |')    
-main(choose_option())
+while True:
+    print('\nWelcome in this system - by Sautier Alexsander ')
+    print('-----------------------------------------------')    
+    print('|            Choose a option                  |')
+    print('|            [1] - LogIn                      |')    
+    print('|            [2] - Create New User            |')    
+    print('|            [3] - Delete User                |')    
+    print('|            [4] - Show Users                 |')    
+    print('|            [5] - Exit                       |')    
+    main(choose_option())
+    input('Press "ENTER" to continue')
+    os.system('clear')
